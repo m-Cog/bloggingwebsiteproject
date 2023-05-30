@@ -1,5 +1,5 @@
-﻿using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Data;
-using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models;
+﻿using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models;
+using bloggingwebsiteproject.UserManagement.DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Repositories
@@ -8,8 +8,8 @@ namespace bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Repositori
     public class BlogPostRepository : IBlogPostRepository
 
     {
-        private readonly BloggingDbContext _context;
-        public BlogPostRepository(BloggingDbContext context)
+        private readonly UserManagementDbContext _context;
+        public BlogPostRepository(UserManagementDbContext context)
         {
             _context = context;
         }
@@ -45,7 +45,7 @@ namespace bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Repositori
         }
 
 
-        public void Add(BlogPost blogPost)
+        public void AddPost(BlogPost blogPost)
 
         {
             _context.BlogPosts.Add(blogPost);
@@ -53,14 +53,14 @@ namespace bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Repositori
         }
 
 
-        public void Update(BlogPost blogPost)
+        public void UpdatePost(BlogPost blogPost)
 
         {
             _context.Entry(blogPost).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public void Delete(BlogPost blogPost)
+        public void DeletePost(BlogPost blogPost)
         {
             _context.BlogPosts.Remove(blogPost);
             _context.SaveChanges();

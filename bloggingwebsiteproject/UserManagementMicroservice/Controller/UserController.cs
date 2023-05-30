@@ -14,10 +14,11 @@ namespace bloggingwebsiteproject.UserManagementMicroservice.Controller
         {
             _userService = userService;
         }
+        
         [HttpGet]
         public IActionResult Index()
         {
-            var users = _userService.GetUsers();
+           var users = _userService.GetUsers();
             return Ok(users);
         }
 

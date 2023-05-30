@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models;
+using bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 namespace bloggingwebsiteproject.UserManagement.DataAccessLayer.Models
@@ -14,8 +16,8 @@ namespace bloggingwebsiteproject.UserManagement.DataAccessLayer.Models
         public DateTime UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        // Navigation property for roles
-        public virtual ICollection<Role> Roles { get; set; } = null!;
-    }
+        public ICollection<BlogPost> BlogPosts { get; set; } = null!;
+        public ICollection<Comment> Comments { get; set; } = null!;
+        }
 
 }

@@ -7,8 +7,8 @@ namespace bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Repositori
         IEnumerable<BlogPost> GetAllPost();
         BlogPost GetById(int id);
         IEnumerable<BlogPost> GetByAuthorId(int authorId);
-        void Add(BlogPost blogPost);
-        void Update(BlogPost blogPost);
-        void Delete(BlogPost blogPost);
+        void AddPost(BlogPost blogPost);
+        void UpdatePost(BlogPost blogPost);
+        void DeletePost(BlogPost blogPost);
     }
 }

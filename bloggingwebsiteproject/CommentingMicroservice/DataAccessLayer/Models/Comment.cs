@@ -13,10 +13,7 @@ namespace bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models
         public DateTime UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        // Navigation property for blog post
-        public virtual BlogPost BlogPost { get; set; } = null!;
-
-        // Navigation property for author user
-        public virtual User Author { get; set; } = null!;
+       public BlogPost BlogPost { get; set; } = null!;
+        public User Author { get; set; } = null!;
     }
 }

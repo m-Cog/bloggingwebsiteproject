@@ -1,6 +1,8 @@
 ﻿using bloggingwebsiteproject.CommentingMicroservice.BusinessLayer.ModelDto;
 using bloggingwebsiteproject.CommentingMicroservice.BusinessLayer.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace bloggingwebsiteproject.CommentingMicroservice.Controller
 {
@@ -10,45 +12,87 @@ namespace bloggingwebsiteproject.CommentingMicroservice.Controller
     {
         private readonly ICommentService _commentService;
 
-        public CommentController (ICommentService commentService)
+        public CommentController(ICommentService commentService)
         {
             _commentService = commentService;
         }
-        [HttpGet("blogpost/{blogPostId}")]
-        public IEnumerable<CommentDto> GetCommentsForBlogPost(int blogPostId)
-        {
-            return _commentService.GetCommentsForBlogPost(blogPostId);
-        }
 
-        [HttpGet("user/{userId}")]
-        public IEnumerable<CommentDto> GetCommentsByUserId(int userId)
+        [HttpGet("blogpost/{blogPostId}")]
+        public ActionResult<IEnumerable<CommentDto>> GetCommentsForBlogPost(int blogPostId)
         {
-            return _commentService.GetCommentsByUserId(userId);
+            try
+            {
+                return Ok(_commentService.GetCommentsByBlogPostId(blogPostId));
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately
+                return StatusCode(500, "An error occurred while retrieving comments for the blog post.");
+            }
         }
 
         [HttpGet("{commentId}")]
-        public CommentDto GetCommentById(int commentId)
+        public ActionResult<CommentDto> GetCommentById(int commentId)
         {
-            return _commentService.GetCommentById(commentId);
+            try
+            {
+                var comment = _commentService.GetCommentById(commentId);
+                if (comment == null)
+                {
+                    return NotFound();
+                }
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately
+                return StatusCode(500, "An error occurred while retrieving the comment.");
+            }
         }
 
         [HttpPost]
-        public CommentDto CreateComment([FromBody] CreateCommentDto createCommentDto)
+        public ActionResult<CommentDto> CreateComment([FromBody] CreateCommentDto createCommentDto)
         {
-            return _commentService.CreateComment(createCommentDto);
+            try
+            {
+                var comment = _commentService.CreateComment(createCommentDto);
+                return CreatedAtAction(nameof(GetCommentById), new { commentId = comment.AuthorId }, comment);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately
+                return StatusCode(500, "An error occurred while creating the comment.");
+            }
         }
 
         [HttpPut("{commentId}")]
-        public void UpdateComment(int commentId, [FromBody] UpdateCommentDto updateCommentDto)
+        public IActionResult UpdateComment(int commentId, [FromBody] UpdateCommentDto updateCommentDto)
         {
-            _commentService.UpdateComment(commentId, updateCommentDto);
+            try
+            {
+                _commentService.UpdateComment(commentId, updateCommentDto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately
+                return StatusCode(500, "An error occurred while updating the comment.");
+            }
         }
 
         [HttpDelete("{commentId}")]
-        public void DeleteComment(int commentId)
+        public IActionResult DeleteComment(int commentId)
         {
-            _commentService.DeleteComment(commentId);
+            try
+            {
+                _commentService.DeleteComment(commentId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately
+                return StatusCode(500, "An error occurred while deleting the comment.");
+            }
         }
     }
 }
-

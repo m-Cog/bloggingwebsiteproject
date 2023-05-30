@@ -1,15 +1,19 @@
-﻿using bloggingwebsiteproject.BloggingMicroservice.BusinessLayer.ModelDto;
+﻿using System.Collections.Generic;
+using bloggingwebsiteproject.BloggingMicroservice.BusinessLayer.ModelDto;
 
-namespace bloggingwebsiteproject.BloggingMicroservice.BusinessLayer.Services
+namespace bloggingwebsiteproject.BloggingMicroservice.Services
 {
     public interface IBlogPostService
     {
-        IEnumerable<BlogPostDto> GetAllPosts();
-        IEnumerable<BlogPostDto> GetBlogPostsByUserId(int  userId);
-        BlogPostDto GetAllPostById (int blogPostId);
-        BlogPostDto CreateBlogPost(CreateBlogPostDto createBlogPostDto);
-        void UpdateBlogPost (int blogPostId,UpdateBlogPostDto updateBlogPostDto);
-        void DeleteBlogPost (int blogPostId);
+        IEnumerable<BlogPostDto> GetAllBlogPosts();
+        BlogPostDto GetBlogPostById(int id);
+        BlogPostDto CreateBlogPost(CreateBlogPostDto createDto);
+        void UpdateBlogPost(int id, UpdateBlogPostDto updateDto);
+        void DeleteBlogPost(int id);
+
+        IEnumerable<BlogPostDto> GetBlogPostsByUserId(int userId);
 
     }
+
 }
+

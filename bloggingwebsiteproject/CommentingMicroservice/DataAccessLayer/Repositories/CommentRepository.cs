@@ -1,5 +1,4 @@
-﻿using bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Data;
-using bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models;
+﻿using bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models;
 using bloggingwebsiteproject.UserManagement.DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,9 +7,9 @@ namespace bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Reposito
 {
     public class CommentRepository : ICommentRepository
     {
-        private readonly CommentingDbContext _context;
+        private readonly UserManagementDbContext _context;
 
-        public CommentRepository( CommentingDbContext context)
+        public CommentRepository( UserManagementDbContext context)
         {
             _context = context;
         }

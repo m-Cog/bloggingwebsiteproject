@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Data;
+using bloggingwebsiteproject.UserManagement.DataAccessLayer.Data;
 
 #nullable disable
 
-namespace bloggingwebsiteproject.Migrations.BloggingDb
+namespace bloggingwebsiteproject.Migrations.UserManagementDb
 {
-    [DbContext(typeof(BloggingDbContext))]
-    partial class BloggingDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UserManagementDbContext))]
+    partial class UserManagementDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -57,13 +57,23 @@ namespace bloggingwebsiteproject.Migrations.BloggingDb
                     b.ToTable("BlogPosts");
                 });
 
-            modelBuilder.Entity("bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models.Category", b =>
+            modelBuilder.Entity("bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BlogPostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -71,33 +81,16 @@ namespace bloggingwebsiteproject.Migrations.BloggingDb
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("CommentId");
 
-                    b.ToTable("Categories");
-                });
+                    b.HasIndex("AuthorId");
 
-            modelBuilder.Entity("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasIndex("BlogPostId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.User", b =>
@@ -134,40 +127,10 @@ namespace bloggingwebsiteproject.Migrations.BloggingDb
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BlogPostCategories", b =>
-                {
-                    b.Property<int>("BlogPostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BlogPostId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("BlogPostCategories");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<int>("RolesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("RoleUser");
-                });
-
             modelBuilder.Entity("bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models.BlogPost", b =>
                 {
                     b.HasOne("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("BlogPosts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -175,34 +138,35 @@ namespace bloggingwebsiteproject.Migrations.BloggingDb
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("BlogPostCategories", b =>
+            modelBuilder.Entity("bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models.Comment", b =>
                 {
-                    b.HasOne("bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models.BlogPost", null)
-                        .WithMany()
+                    b.HasOne("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.User", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models.BlogPost", "BlogPost")
+                        .WithMany("Comments")
                         .HasForeignKey("BlogPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Author");
+
+                    b.Navigation("BlogPost");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models.BlogPost", b =>
                 {
-                    b.HasOne("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Comments");
+                });
 
-                    b.HasOne("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("bloggingwebsiteproject.UserManagement.DataAccessLayer.Models.User", b =>
+                {
+                    b.Navigation("BlogPosts");
+
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

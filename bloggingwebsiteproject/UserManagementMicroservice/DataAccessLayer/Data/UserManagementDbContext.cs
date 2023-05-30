@@ -1,5 +1,8 @@
-﻿using bloggingwebsiteproject.UserManagement.DataAccessLayer.Models;
+﻿using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Models;
+using bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Models;
+using bloggingwebsiteproject.UserManagement.DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Contracts;
 
 namespace bloggingwebsiteproject.UserManagement.DataAccessLayer.Data
 {
@@ -11,22 +14,42 @@ namespace bloggingwebsiteproject.UserManagement.DataAccessLayer.Data
         }
 
         public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Role> Roles { get; set; } = null!;
+        public DbSet<BlogPost> BlogPosts { get; set; } = null!;
+        public DbSet<Comment> Comments { get; set; } = null!;
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure many-to-many relationship between User and Role models
             modelBuilder.Entity<User>()
-          .HasMany(u => u.Roles)
-          .WithMany(r => r.Users)
-          .UsingEntity<Dictionary<string, object>>(
-                "UserRoles",
-                ur=>ur.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Restrict),
-                 ur => ur.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict),
-                 ur =>
-                 {
-                     ur.HasKey("UserId", "RoleId");
-                 });
+              .HasMany(u => u.BlogPosts)
+              .WithOne(bp => bp.Author)
+              .HasForeignKey(bp => bp.AuthorId);
+
+            modelBuilder.Entity<User>()
+              .HasMany(u => u.Comments)
+              .WithOne(c => c.Author)
+              .HasForeignKey(c => c.AuthorId);
+
+            modelBuilder.Entity<Comment>()
+              .HasOne(c => c.BlogPost)
+              .WithMany(bp => bp.Comments)
+              .HasForeignKey(c => c.BlogPostId);
+
+            modelBuilder.Entity<BlogPost>()
+              .HasOne(bp => bp.Author)
+              .WithMany(u => u.BlogPosts)
+              .HasForeignKey(bp => bp.AuthorId);
+
+
+            
+
+            base.OnModelCreating(modelBuilder);
         }
+
+
+
+
+
     }
 }
