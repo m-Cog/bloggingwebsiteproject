@@ -8,7 +8,7 @@ using bloggingwebsiteproject.UserManagement.DataAccessLayer.Data;
 
 #nullable disable
 
-namespace bloggingwebsiteproject.Migrations.UserManagementDb
+namespace bloggingwebsiteproject.Migrations
 {
     [DbContext(typeof(UserManagementDbContext))]
     partial class UserManagementDbContextModelSnapshot : ModelSnapshot
@@ -114,6 +114,13 @@ namespace bloggingwebsiteproject.Migrations.UserManagementDb
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordConfirmation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");

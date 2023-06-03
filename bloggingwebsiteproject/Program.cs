@@ -3,9 +3,6 @@ using bloggingwebsiteproject.BloggingMicroservice.DataAccessLayer.Repositories;
 using bloggingwebsiteproject.BloggingMicroservice.Services;
 using bloggingwebsiteproject.CommentingMicroservice.BusinessLayer.Services;
 using bloggingwebsiteproject.CommentingMicroservice.DataAccessLayer.Repositories;
-using bloggingwebsiteproject.UserAuthMicroservice.BusinessLayer.Services;
-using bloggingwebsiteproject.UserAuthMicroservice.DataAccessLayer.Data;
-using bloggingwebsiteproject.UserAuthMicroservice.DataAccessLayer.Repositories;
 using bloggingwebsiteproject.UserManagement.DataAccessLayer.Data;
 using bloggingwebsiteproject.UserManagement.DataAccessLayer.Repositories;
 using bloggingwebsiteproject.UserManagementMicroservice.Business_Layer.Services;
@@ -21,9 +18,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<UserManagementDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BlUsers")));
-builder.Services.AddDbContext<UserAuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserAuth")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+    builder => builder.WithOrigins("http://localhost:3000")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+});
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogginWebsite", Version = "v1" });
@@ -88,8 +92,6 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
-builder.Services.AddScoped<IAuthUserRepository, AuthUserRepository>();
-builder.Services.AddScoped<IAuthUserService, AuthUserService>();
 
 
 
@@ -108,6 +110,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

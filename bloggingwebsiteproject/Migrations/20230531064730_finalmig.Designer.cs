@@ -9,11 +9,11 @@ using bloggingwebsiteproject.UserManagement.DataAccessLayer.Data;
 
 #nullable disable
 
-namespace bloggingwebsiteproject.Migrations.UserManagementDb
+namespace bloggingwebsiteproject.Migrations
 {
     [DbContext(typeof(UserManagementDbContext))]
-    [Migration("20230530052204_auth")]
-    partial class auth
+    [Migration("20230531064730_finalmig")]
+    partial class finalmig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -116,6 +116,13 @@ namespace bloggingwebsiteproject.Migrations.UserManagementDb
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordConfirmation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");

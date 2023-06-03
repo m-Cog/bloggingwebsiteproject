@@ -1,6 +1,7 @@
 ﻿using bloggingwebsiteproject.BloggingMicroservice.BusinessLayer.ModelDto;
 using bloggingwebsiteproject.BloggingMicroservice.BusinessLayer.Services;
 using bloggingwebsiteproject.BloggingMicroservice.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -18,6 +19,7 @@ namespace bloggingwebsiteproject.BloggingMicroservice.Controller
         }
 
         [HttpGet]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<IEnumerable<BlogPostDto>> GetAllPosts()
         {
             try
@@ -26,13 +28,13 @@ namespace bloggingwebsiteproject.BloggingMicroservice.Controller
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately (e.g., log the error, return an error response)
-                // You can customize the response based on your requirements
                 return StatusCode(500, "An error occurred while retrieving blog posts.");
             }
         }
 
+
         [HttpGet("{userId}")]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<IEnumerable<BlogPostDto>> GetBlogPostsByUserId(int userId)
         {
             try
@@ -47,6 +49,7 @@ namespace bloggingwebsiteproject.BloggingMicroservice.Controller
         }
 
         [HttpGet("{blogpostId}")]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<BlogPostDto> GetAllPostById(int blogPostId)
         {
             try
@@ -66,6 +69,7 @@ namespace bloggingwebsiteproject.BloggingMicroservice.Controller
         }
 
         [HttpPost]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<BlogPostDto> CreateBlogPost(CreateBlogPostDto createBlogPostDto)
         {
             try
@@ -81,6 +85,7 @@ namespace bloggingwebsiteproject.BloggingMicroservice.Controller
         }
 
         [HttpPut("{blogPostId}")]
+        [EnableCors("AllowLocalhost")]
         public IActionResult UpdateBlogPost(int blogPostId, UpdateBlogPostDto updateBlogPostDto)
         {
             try
@@ -96,6 +101,7 @@ namespace bloggingwebsiteproject.BloggingMicroservice.Controller
         }
 
         [HttpDelete("{blogPostId}")]
+        [EnableCors("AllowLocalhost")]
         public IActionResult DeleteBlogPost(int blogPostId)
         {
             try

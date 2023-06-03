@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace bloggingwebsiteproject.UserAuthMicroservice.BusinessLayer.ModelDto
+namespace bloggingwebsiteproject.UserManagementManagement.Business_Layer.ModelDto
 {
     public class LoginReq
     {

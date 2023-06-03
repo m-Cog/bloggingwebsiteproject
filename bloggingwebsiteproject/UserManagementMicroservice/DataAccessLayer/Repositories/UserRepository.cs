@@ -36,13 +36,7 @@ namespace bloggingwebsiteproject.UserManagement.DataAccessLayer.Repositories
 
         {
 
-            var data = _context.Users.FirstOrDefault(u => u.Email == email);
-            if (data == null)
-            {
-                throw new Exception("no email found 123");
-            }
-            return data;
-
+            return _context.Users.FirstOrDefault(u => u.Email == email);
         }
         public void Add(User user)
         {

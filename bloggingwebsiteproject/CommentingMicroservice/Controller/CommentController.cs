@@ -1,5 +1,6 @@
 ﻿using bloggingwebsiteproject.CommentingMicroservice.BusinessLayer.ModelDto;
 using bloggingwebsiteproject.CommentingMicroservice.BusinessLayer.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace bloggingwebsiteproject.CommentingMicroservice.Controller
         }
 
         [HttpGet("blogpost/{blogPostId}")]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<IEnumerable<CommentDto>> GetCommentsForBlogPost(int blogPostId)
         {
             try
@@ -32,6 +34,7 @@ namespace bloggingwebsiteproject.CommentingMicroservice.Controller
         }
 
         [HttpGet("{commentId}")]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<CommentDto> GetCommentById(int commentId)
         {
             try
@@ -51,6 +54,7 @@ namespace bloggingwebsiteproject.CommentingMicroservice.Controller
         }
 
         [HttpPost]
+        [EnableCors("AllowLocalhost")]
         public ActionResult<CommentDto> CreateComment([FromBody] CreateCommentDto createCommentDto)
         {
             try
@@ -66,6 +70,7 @@ namespace bloggingwebsiteproject.CommentingMicroservice.Controller
         }
 
         [HttpPut("{commentId}")]
+        [EnableCors("AllowLocalhost")]
         public IActionResult UpdateComment(int commentId, [FromBody] UpdateCommentDto updateCommentDto)
         {
             try
@@ -81,6 +86,7 @@ namespace bloggingwebsiteproject.CommentingMicroservice.Controller
         }
 
         [HttpDelete("{commentId}")]
+        [EnableCors("AllowLocalhost")]
         public IActionResult DeleteComment(int commentId)
         {
             try

@@ -1,14 +1,14 @@
-﻿using static bloggingwebsiteproject.UserAuthMicroservice.DataAccessLayer.Models.UserAuth;
+﻿using bloggingwebsiteproject.UserManagement.DataAccessLayer.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace bloggingwebsiteproject.UserAuthMicroservice.BusinessLayer.ModelDto
+namespace bloggingwebsiteproject.UserManagementMicroservice.Business_Layer.ModelDto
 {
     public class AuthUserDto
     {
         public int AuthUserDtoId { get; set; }
 
         [Required]
-        public string Name { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         [Required]
         public string Email { get; set; } = null!;
@@ -26,5 +26,4 @@ namespace bloggingwebsiteproject.UserAuthMicroservice.BusinessLayer.ModelDto
 
         public AuthRoleType Role { get; set; }
     }
-
 }
